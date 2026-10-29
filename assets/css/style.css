@@ -1017,6 +1017,37 @@ img {
   color: var(--ink-2);
 }
 
+.msg-more {
+  margin-top: 18px;
+  padding-top: 13px;
+  border-top: 1px dashed rgba(33, 31, 27, 0.13);
+}
+
+.more-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  color: var(--ink-3);
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.more-btn:hover {
+  border-color: rgba(154, 59, 44, 0.35);
+  background: #fffdf7;
+  color: var(--red);
+}
+
+.more-btn:focus-visible {
+  outline: 2px solid rgba(154, 59, 44, 0.35);
+  outline-offset: 2px;
+}
+
 .msg-laozi.is-streaming .msg-body p:last-child::after {
   content: "▍";
   margin-left: 2px;

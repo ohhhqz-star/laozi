@@ -6,6 +6,7 @@
   const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
   const STORE = { cfg: 'laozi.config.v1', chat: 'laozi.chat.v1' };
+  const DETAIL_ASK = '说得详细一点。';
 
   const PROVIDERS = {
     deepseek: {
@@ -120,6 +121,8 @@
 九、若对方只是闲谈，就陪他闲谈；不必每句讲道，不必每次给答案。
 十、对方称你“老子”“先生”“您”皆可，你称对方“你”即可，不用“阁下”“施主”。
 十一、不要使用 Markdown 标题、列表或代码块，不要加括号里的旁白或动作描写。`;
+
+  const DETAIL_PROMPT = `【详说】问者想听你把上一答说得再透些。仍以同一句经文起头，原样抄录，用「」括起，单独成行；不另引别句。其后空一行，分两三段来说：这一句在讲什么，于他眼下何处可用，何以如此。总长二百字上下，至多三百字。仍是家常白话，只是把那一层意思往里说；不列点，不给步骤，不写成注解或论文，不因说得细而变得高深，也不重复上一答已说过的话。`;
 
   // 每答必引一句。经句均取自 data/daodejing.json，建库时逐条校验。
   const QUOTE_BANK = [
@@ -736,6 +739,34 @@
     return '「' + candidates[0].text + '」\n\n' + trimmed;
   }
 
+  function previousQuote() {
+    for (let i = state.messages.length - 1; i >= 0; i -= 1) {
+      const m = state.messages[i];
+      if (m.role !== 'assistant') continue;
+      const hit = String(m.content).match(/^「([^」]+)」/);
+      if (!hit) return null;
+      return QUOTE_BANK.find((q) => q.text === hit[1]) || { n: 0, text: hit[1] };
+    }
+    return null;
+  }
+
+  function clearMoreButtons() {
+    $$('.msg-more', messagesEl).forEach((el) => el.remove());
+  }
+
+  function addMoreButton(bubble) {
+    const body = $('.msg-body', bubble);
+    if (!body || $('.msg-more', body)) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'msg-more';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'more-btn';
+    btn.textContent = '说得详细一点';
+    wrap.append(btn);
+    body.append(wrap);
+  }
+
   function addUserBubble(text) {
     const el = document.createElement('div');
     el.className = 'msg msg-user';
@@ -964,7 +995,7 @@
     }
   }
 
-  function buildSystem(userText, candidates) {
+  function buildSystem(userText, candidates, detail = false) {
     const parts = [PERSONA, STYLE_PROMPTS[cfg.style] || STYLE_PROMPTS.plain];
     if (state.context) {
       const c = CHAPTERS[state.context - 1];
@@ -975,6 +1006,15 @@
           c.text +
           '」。他的问题由此章而起。可应他的问，也可指出他所执之处；不必通篇讲解。'
       );
+    }
+    if (detail && candidates.length) {
+      parts.push(
+        '【本次引文】回答的第一行仍是一句引文，仍用上一答所引的这一句，原样抄录，用「」括起，单独成行：\n「' +
+          candidates[0].text +
+          '」\n不得改写、拼接、压缩，不要写“老子说”，不要标出处，也不要另引别句。'
+      );
+      parts.push(DETAIL_PROMPT);
+      return parts.join('\n\n');
     }
     const list = candidates
       .map((q, i) => i + 1 + '. 「' + q.text + '」（第' + cn(q.n) + '章）')
@@ -991,7 +1031,7 @@
     return parts.join('\n\n');
   }
 
-  function buildMessages(userText, candidates) {
+  function buildMessages(userText, candidates, detail = false) {
     const prior = state.messages.slice(0, -1);
     const history = [];
     let chars = 0;
@@ -1003,13 +1043,13 @@
       chars += m.content.length;
     }
     return [
-      { role: 'system', content: buildSystem(userText, candidates) },
+      { role: 'system', content: buildSystem(userText, candidates, detail) },
       ...history,
       { role: 'user', content: userText },
     ];
   }
 
-  async function sendMessage(presetText) {
+  async function sendMessage(presetText, options = {}) {
     const text = (typeof presetText === 'string' ? presetText : input.value).trim();
     if (!text || state.streaming) return;
 
@@ -1019,6 +1059,8 @@
       return;
     }
 
+    const detail = Boolean(options.detail);
+    clearMoreButtons();
     setError('');
     input.value = '';
     resizeInput();
@@ -1026,8 +1068,14 @@
     persistChat();
     addUserBubble(text);
 
-    const quoteCandidates = pickQuoteCandidates(text);
-    const apiMessages = buildMessages(text, quoteCandidates);
+    let quoteCandidates;
+    if (detail) {
+      const prev = previousQuote();
+      quoteCandidates = prev ? [prev] : pickQuoteCandidates(text).slice(0, 1);
+    } else {
+      quoteCandidates = pickQuoteCandidates(text);
+    }
+    const apiMessages = buildMessages(text, quoteCandidates, detail && quoteCandidates.length > 0);
     const bubble = addLaoziBubble('', true);
     const body = bubble.querySelector('.msg-body');
     let full = '';
@@ -1068,6 +1116,7 @@
       persistChat();
       bubble.classList.remove('is-streaming');
       body.innerHTML = renderRich(finalText);
+      if (!detail) addMoreButton(bubble);
       scrollChat(true);
     } catch (err) {
       bubble.classList.remove('is-streaming');
@@ -1125,6 +1174,14 @@
     const btn = e.target.closest('button');
     if (!btn) return;
     sendMessage(btn.textContent.trim());
+  });
+
+  messagesEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.more-btn');
+    if (!btn || state.streaming) return;
+    const last = state.messages[state.messages.length - 1];
+    if (!last || last.role !== 'assistant') return;
+    sendMessage(DETAIL_ASK, { detail: true });
   });
 
   // ---------- settings ----------
@@ -1288,6 +1345,12 @@
       if (m.role === 'user') addUserBubble(m.content);
       else addLaoziBubble(m.content);
     });
+    const last = state.messages[state.messages.length - 1];
+    const prev = state.messages[state.messages.length - 2];
+    if (last?.role === 'assistant' && prev?.content !== DETAIL_ASK) {
+      const bubbles = $$('.msg-laozi', messagesEl);
+      if (bubbles.length) addMoreButton(bubbles[bubbles.length - 1]);
+    }
     showIntroIfEmpty();
     if (state.context) {
       contextBar.hidden = false;
