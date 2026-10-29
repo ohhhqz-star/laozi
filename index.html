@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>老子 · 道德经｜与老子对话</title>
+  <meta name="description" content="《道德经》八十一章在线阅读，并可与老子对话。纯静态网页，接入国内主流大模型 API，密钥只存本机。">
+  <meta name="theme-color" content="#f5f0e4">
+  <link rel="canonical" href="https://ohhhqz-star.github.io/laozi/">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="老子 · 道德经">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:url" content="https://ohhhqz-star.github.io/laozi/">
+  <meta property="og:title" content="老子 · 道德经">
+  <meta property="og:description" content="八十一章，六千余言。开卷，或与老子说几句话。">
+  <meta property="og:image" content="https://ohhhqz-star.github.io/laozi/assets/img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="老子 · 道德经">
+  <meta name="twitter:description" content="八十一章，六千余言。开卷，或与老子说几句话。">
+  <meta name="twitter:image" content="https://ohhhqz-star.github.io/laozi/assets/img/og.jpg">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="site-head" id="site-head">
+    <a class="wordmark" href="#/" aria-label="回到首页">
+      <span class="seal-mark" aria-hidden="true">道</span>
+      <span class="wordmark-text">老子<i>·</i>道德经</span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="#/read/1" id="nav-read">经文</a>
+      <button type="button" data-open-chat>问道</button>
+      <button type="button" class="nav-settings" data-open-settings aria-label="设置">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="12" cy="12" r="3.2"></circle>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.03-1.56V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9v.01c.2.63.76 1.02 1.56 1.02H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51.97Z"></path>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="view view-home" id="view-home">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="kicker"><span></span>周 · 守藏室之史</p>
+          <div class="hero-title-wrap">
+            <h1 class="hero-title"><span>老</span><span>子</span></h1>
+            <p class="hero-vertical" aria-hidden="true">道德经</p>
+          </div>
+          <p class="hero-lead">道可道，非常道。<br>五千言，八十一章。愿以一言，答君一问。</p>
+          <div class="hero-actions">
+            <a class="btn btn-ink" href="#/read/1">开卷</a>
+            <button class="btn btn-ghost" type="button" data-open-chat>问道</button>
+          </div>
+        </div>
+
+        <figure class="hero-figure">
+          <img src="assets/img/laozi.webp" alt="老子水墨画像，白发长须，抬手远望" width="1024" height="1536" fetchpriority="high">
+          <span class="stamp" aria-hidden="true">道</span>
+          <figcaption>老子像 · AI 水墨</figcaption>
+        </figure>
+      </div>
+
+      <div class="home-foot">
+        <div class="home-quote">
+          <span class="quote-label">今日一句</span>
+          <a class="quote-link" id="quote-link" href="#/read/1">
+            <span class="quote-text" id="quote-text">道可道，非常道；名可名，非常名。</span>
+            <span class="quote-src" id="quote-src">第一章</span>
+          </a>
+          <button class="quote-next" type="button" id="quote-next">换一句</button>
+        </div>
+        <p class="foot-note">王弼本 · 八十一章 · 六千余言</p>
+      </div>
+    </section>
+
+    <section class="view view-read" id="view-read" hidden>
+      <div class="reader">
+        <aside class="toc" aria-label="目录">
+          <div class="toc-head">
+            <h2>目录</h2>
+            <span>81</span>
+          </div>
+          <label class="toc-search">
+            <span class="visually-hidden">搜索经文</span>
+            <input type="search" id="toc-search" placeholder="搜索字句…" autocomplete="off">
+          </label>
+          <div class="toc-grid" id="toc-grid"></div>
+          <div class="toc-results" id="toc-results" hidden></div>
+          <p class="toc-empty" id="toc-empty" hidden>未找到相应章句</p>
+        </aside>
+
+        <article class="chapter">
+          <p class="chapter-eyebrow" id="chapter-eyebrow">道经 · 第一章</p>
+          <h2 class="chapter-title" id="chapter-title">第一章</h2>
+          <div class="chapter-text" id="chapter-text" data-size="1"></div>
+          <div class="chapter-tools">
+            <button type="button" class="tool-ask" id="ask-chapter">以此章问老子</button>
+            <button type="button" class="tool" id="copy-chapter">复制</button>
+            <button type="button" class="tool" id="font-size" aria-label="调整字号">字号 Aa</button>
+            <span class="tool-progress" id="chapter-progress">1 / 81</span>
+          </div>
+          <nav class="chapter-nav" aria-label="翻章">
+            <a id="prev-chapter" href="#/read/1"><i>←</i><span>第一章</span></a>
+            <a id="next-chapter" href="#/read/2"><span>第二章</span><i>→</i></a>
+          </nav>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="chat-scrim" id="chat-scrim" hidden></div>
+
+  <aside class="chat" id="chat" aria-label="与老子对话" aria-hidden="true">
+    <header class="chat-head">
+      <img class="chat-avatar" src="assets/img/laozi-avatar.webp" alt="" width="40" height="40">
+      <div class="chat-id">
+        <h2>老子</h2>
+        <p id="chat-status">静候</p>
+      </div>
+      <div class="chat-head-actions">
+        <button type="button" id="chat-new" title="开始新的对话">新对话</button>
+        <button type="button" data-open-settings title="接入设置">设置</button>
+        <button type="button" class="chat-close" id="chat-close" aria-label="关闭对话">×</button>
+      </div>
+      <div class="chat-context" id="chat-context" hidden>
+        <span>参看 · <b id="chat-context-label">第一章</b></span>
+        <button type="button" id="clear-context" aria-label="取消参看章节">×</button>
+      </div>
+    </header>
+
+    <div class="chat-body" id="chat-body">
+      <div class="chat-intro" id="chat-intro">
+        <p class="chat-hello">有何事，愿问我？</p>
+        <p class="chat-sub">每答，先引一句经文，再略说几句。问得真切，答得也真切。</p>
+        <div class="suggests" id="suggests">
+          <button type="button">何为道？</button>
+          <button type="button">无为，是不是什么都不做？</button>
+          <button type="button">我近来焦虑，如何自处？</button>
+          <button type="button">水为何近于道？</button>
+        </div>
+        <button type="button" class="chat-setup" id="chat-setup">尚未接入？去设置模型与密钥 →</button>
+      </div>
+      <div class="messages" id="messages" aria-live="polite"></div>
+    </div>
+
+    <div class="chat-error" id="chat-error" hidden>
+      <p id="chat-error-text"></p>
+      <button type="button" id="chat-retry">重试</button>
+    </div>
+
+    <form class="chat-form" id="chat-form">
+      <div class="composer">
+        <textarea id="chat-input" rows="1" maxlength="2000" placeholder="写下一问…" aria-label="输入你的问题"></textarea>
+        <button class="send" type="submit" id="chat-send" aria-label="发送">
+          <svg class="send-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 19V5M5 12l7-7 7 7"></path>
+          </svg>
+          <span class="stop-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+      <p class="chat-note">AI 角色扮演，非真实老子 · 密钥仅存本机</p>
+    </form>
+  </aside>
+
+  <dialog class="settings" id="settings" aria-labelledby="settings-title">
+    <form id="settings-form" novalidate>
+      <header class="settings-head">
+        <div>
+          <p class="kicker"><span></span>接入</p>
+          <h2 id="settings-title">模型与密钥</h2>
+        </div>
+        <button type="button" class="settings-close" id="settings-close" aria-label="关闭设置">×</button>
+      </header>
+
+      <div class="settings-body">
+        <p class="settings-note">密钥只保存在本机浏览器，请求直接发往你选择的服务商；若启用自建转发，也只经过你自己的服务器。多数境内服务商可直连，个别接口不支持浏览器跨域，见 README 的转发说明。</p>
+
+        <label class="field">
+          <span>服务商</span>
+          <select id="provider"></select>
+          <em id="provider-note"></em>
+        </label>
+
+        <label class="field">
+          <span>接口地址 · Base URL</span>
+          <input id="base-url" type="url" spellcheck="false" autocomplete="off" placeholder="https://api.deepseek.com/v1">
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>模型</span>
+            <input id="model" type="text" spellcheck="false" autocomplete="off" placeholder="deepseek-chat">
+          </label>
+          <label class="field">
+            <span>语气</span>
+            <select id="style">
+              <option value="plain">冲淡</option>
+              <option value="classical">简古</option>
+              <option value="warm">亲切</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>API 密钥</span>
+          <span class="key-row">
+            <input id="api-key" type="password" spellcheck="false" autocomplete="off" placeholder="sk-…">
+            <button type="button" id="toggle-key">显示</button>
+          </span>
+        </label>
+
+        <details class="advanced">
+          <summary>高级 · 自定义请求头与参数</summary>
+          <label class="field">
+            <span>额外请求头（JSON）</span>
+            <textarea id="extra-headers" rows="2" spellcheck="false" placeholder='{"api-key": "…"}'></textarea>
+          </label>
+          <label class="field">
+            <span>额外请求体（JSON）</span>
+            <textarea id="extra-body" rows="2" spellcheck="false" placeholder='{"enable_thinking": false}'></textarea>
+          </label>
+          <p class="field-hint">用于 Azure OpenAI、OpenRouter 或需要特殊开关的服务。额外请求头可覆盖 Authorization；密钥留空时不会发送 Authorization。</p>
+        </details>
+
+        <p class="settings-hint">模型名更新较快，若提示模型不存在，请以服务商控制台为准。境外接口（OpenAI 等）需要网络可达。</p>
+      </div>
+
+      <footer class="settings-foot">
+        <p id="test-status" role="status"></p>
+        <div class="settings-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="test-btn">测试连接</button>
+          <button type="submit" class="btn btn-ink btn-sm">保存</button>
+        </div>
+      </footer>
+    </form>
+  </dialog>
+
+  <noscript>
+    <p style="padding:120px 24px;text-align:center;font-family:serif;">此页需要 JavaScript 才能阅读与对话。</p>
+  </noscript>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
